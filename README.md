@@ -1,6 +1,6 @@
 # Search-Engine
 
-This project is a simple search-engine implemented in Java language using OpenSearch as data storage and full-test storage engine. 
+This project is a simple search-engine implemented in Java language using OpenSearch as data storage and full-text search storage engine. 
 
 ### Content list
 
