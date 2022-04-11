@@ -34,6 +34,8 @@ docker run -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" -e "plugins
 ```
 After starting OpenSearch, run the Java application by running Main.java on the project. 
 
+This application can also be ran using this **Docker image**: https://hub.docker.com/repository/docker/johan1404/search-engine
+
 <a name="design"></a>
 ## 4. Application Design
 
