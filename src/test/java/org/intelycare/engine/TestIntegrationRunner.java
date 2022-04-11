@@ -1,3 +1,5 @@
+package org.intelycare.engine;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.intelycare.engine.exceptions.BadCommandException;
@@ -7,10 +9,10 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestRunner {
+public class TestIntegrationRunner {
 
   @Test
-  void shouldThrowBadCommandExceptionFromIncorrectQueryCommand() throws BadCommandException, IOException {
+  void shouldThrowBadCommandExceptionFromIncorrectQueryCommand() {
     Injector injector = Guice.createInjector();
     CommandService commandService = injector.getInstance(CommandServiceImpl.class);
     assertThrows(BadCommandException.class, () -> commandService.executeCommand("qury a"));
@@ -43,14 +45,14 @@ public class TestRunner {
     CommandService commandService = injector.getInstance(CommandServiceImpl.class);
     commandService.executeCommand("index 1 token");
     commandService.executeCommand("index 2 token");
-    assertEquals(commandService.executeCommand("query token"), "query results 1 2");
+    assertEquals("query results 1 2", commandService.executeCommand("query token"));
   }
 
   @Test
   void shouldReturnNoResults() throws BadCommandException, IOException {
     Injector injector = Guice.createInjector();
     CommandService commandService = injector.getInstance(CommandServiceImpl.class);
-    assertEquals(commandService.executeCommand("query token2").trim(), "query results");
+    assertEquals("query results", commandService.executeCommand("query token2").trim());
   }
 
 }

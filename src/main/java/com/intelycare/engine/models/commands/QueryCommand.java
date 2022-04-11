@@ -24,7 +24,7 @@ public class QueryCommand implements Command{
     boolean matchFound = matcher.find();
     long operatorCount = command.chars().filter(c -> c == '&' || c == '|').count();
     long bracketsCount = command.chars().filter(c -> c == '(').count();
-    if (!matchFound && (bracketsCount==(operatorCount-1))) {
+    if (!matchFound || (bracketsCount==(operatorCount-1))) {
       throw new BadCommandException(ResourceBundleConfig.getWord("query-error"));
     }
   }
