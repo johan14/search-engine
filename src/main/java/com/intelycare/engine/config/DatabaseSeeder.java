@@ -1,4 +1,4 @@
-package engine.config;
+package com.intelycare.engine.config;
 
 import java.io.IOException;
 import javax.inject.Inject;

@@ -1,4 +1,4 @@
-package engine.models;
+package com.intelycare.engine.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

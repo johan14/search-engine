@@ -1,8 +1,8 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import engine.exceptions.BadCommandException;
-import engine.services.CommandService;
-import engine.services.CommandServiceImpl;
+import com.intelycare.engine.exceptions.BadCommandException;
+import com.intelycare.engine.services.CommandService;
+import com.intelycare.engine.services.CommandServiceImpl;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,17 +24,33 @@ public class TestRunner {
   }
 
   @Test
-  void shouldExecuteCorrectlyQueryCommand() throws BadCommandException, IOException {
+  void shouldExecuteCorrectlyIndexCommand(){
     Injector injector = Guice.createInjector();
     CommandService commandService = injector.getInstance(CommandServiceImpl.class);
-    commandService.executeCommand("index 1 token");
+    assertDoesNotThrow(()->commandService.executeCommand("index 1 token"));
   }
 
   @Test
-  void shouldExecuteCorrectlyIndexCommand() throws IOException, BadCommandException {
+  void shouldExecuteCorrectlyQueryCommand() {
     Injector injector = Guice.createInjector();
     CommandService commandService = injector.getInstance(CommandServiceImpl.class);
-    commandService.executeCommand("query 1");
+    assertDoesNotThrow(()->commandService.executeCommand("query token"));
+  }
+
+  @Test
+  void shouldReturnExactResults() throws BadCommandException, IOException {
+    Injector injector = Guice.createInjector();
+    CommandService commandService = injector.getInstance(CommandServiceImpl.class);
+    commandService.executeCommand("index 1 token");
+    commandService.executeCommand("index 2 token");
+    assertEquals(commandService.executeCommand("query token"), "query results 1 2");
+  }
+
+  @Test
+  void shouldReturnNoResults() throws BadCommandException, IOException {
+    Injector injector = Guice.createInjector();
+    CommandService commandService = injector.getInstance(CommandServiceImpl.class);
+    assertEquals(commandService.executeCommand("query token2").trim(), "query results");
   }
 
 }

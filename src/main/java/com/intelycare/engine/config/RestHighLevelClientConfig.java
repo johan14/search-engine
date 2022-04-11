@@ -1,17 +1,13 @@
-package engine.config;
+package com.intelycare.engine.config;
 
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import org.apache.http.HttpHost;
-import org.opensearch.client.IndicesClient;
-import org.opensearch.client.RequestOptions;
 import org.opensearch.client.RestClient;
 import org.opensearch.client.RestClientBuilder;
 import org.opensearch.client.RestHighLevelClient;
-import org.opensearch.client.indices.CreateIndexRequest;
-import org.opensearch.client.indices.GetIndexRequest;
 
 public class RestHighLevelClientConfig {
 

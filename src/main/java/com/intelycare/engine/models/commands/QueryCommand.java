@@ -1,20 +1,18 @@
-package engine.models.commands;
+package com.intelycare.engine.models.commands;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import engine.config.RestHighLevelClientConfig;
-import engine.exceptions.BadCommandException;
+import com.intelycare.engine.config.ResourceBundleConfig;
+import com.intelycare.engine.config.RestHighLevelClientConfig;
+import com.intelycare.engine.exceptions.BadCommandException;
 import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.Data;
-import org.apache.http.HttpHost;
-import org.opensearch.client.RestClient;
-import org.opensearch.client.RestClientBuilder;
 import org.opensearch.client.RestHighLevelClient;
-import engine.utils.OpenSearchUtils;
+import com.intelycare.engine.utils.OpenSearchUtils;
 
 @Data
 public class QueryCommand implements Command{
@@ -24,19 +22,20 @@ public class QueryCommand implements Command{
     Pattern pattern = Pattern.compile("^(query)\\s((\\w))*");
     Matcher matcher = pattern.matcher(command);
     boolean matchFound = matcher.find();
-    if (!matchFound) {
-      throw new BadCommandException("query error");
+    long operatorCount = command.chars().filter(c -> c == '&' || c == '|').count();
+    long bracketsCount = command.chars().filter(c -> c == '(').count();
+    if (!matchFound && (bracketsCount==(operatorCount-1))) {
+      throw new BadCommandException(ResourceBundleConfig.getWord("query-error"));
     }
   }
 
   @Override
-  public void executeCommand(String command) throws IOException, BadCommandException {
+  public String executeCommand(String command) throws IOException, BadCommandException {
     validate(command);
     Injector injector = Guice.createInjector();
     RestHighLevelClientConfig restHighLevelClientConfig = injector.getInstance(RestHighLevelClientConfig.class);
     RestHighLevelClient client = restHighLevelClientConfig.provideRestHighLevelClient();
       List<String> ids = OpenSearchUtils.queryData(client, command);
-      System.out.println("query results "+ids.stream().collect(Collectors.joining(" ")));
-
+      return "query results "+ String.join(" ", ids);
   }
 }

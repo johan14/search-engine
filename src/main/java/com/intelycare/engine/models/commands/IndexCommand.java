@@ -1,18 +1,18 @@
-package engine.models.commands;
+package com.intelycare.engine.models.commands;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import engine.config.RestHighLevelClientConfig;
-import engine.exceptions.BadCommandException;
+import com.intelycare.engine.config.ResourceBundleConfig;
+import com.intelycare.engine.config.RestHighLevelClientConfig;
+import com.intelycare.engine.models.Document;
+import com.intelycare.engine.exceptions.BadCommandException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.Data;
-import engine.models.Document;
-import engine.utils.OpenSearchUtils;
-import org.opensearch.client.RestHighLevelClient;
+import com.intelycare.engine.utils.OpenSearchUtils;
 
 @Data
 public class IndexCommand implements Command {
@@ -24,19 +24,19 @@ public class IndexCommand implements Command {
     Matcher matcher = pattern.matcher(command);
     boolean matchFound = matcher.find();
     if (!matchFound) {
-      throw new BadCommandException("index error");
+      throw new BadCommandException(ResourceBundleConfig.getWord("index-error"));
     }
   }
 
   @Override
-  public void executeCommand(String command) throws IOException, BadCommandException {
+  public String executeCommand(String command) throws IOException, BadCommandException {
     validate(command);
     Injector injector = Guice.createInjector();
     RestHighLevelClientConfig restHighLevelClientConfig= injector.getInstance(RestHighLevelClientConfig.class);
 
     Document document = fromCommandToDocument(command);
     OpenSearchUtils.insertData(restHighLevelClientConfig.provideRestHighLevelClient(), document);
-    System.out.println("index ok "+document.getID());
+    return "index ok "+document.getID();
   }
 
   private Document fromCommandToDocument(String command) {

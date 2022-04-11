@@ -1,4 +1,4 @@
-package engine.models.commands;
+package com.intelycare.engine.models.commands;
 
 public class CommandFactory {
 

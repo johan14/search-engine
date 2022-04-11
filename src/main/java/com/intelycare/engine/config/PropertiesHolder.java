@@ -1,6 +1,5 @@
-package engine.config;
+package com.intelycare.engine.config;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -14,7 +13,7 @@ public class PropertiesHolder {
   @Inject
   @Singleton
   public PropertiesHolder(){
-    try (InputStream input = new FileInputStream("src/main/resources/application.properties")) {
+    try (InputStream input = PropertiesHolder.class.getClassLoader().getResourceAsStream("application.properties")) {
 
       prop = new Properties();
       prop.load(input);

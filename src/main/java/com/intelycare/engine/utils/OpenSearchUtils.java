@@ -1,4 +1,4 @@
-package engine.utils;
+package com.intelycare.engine.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -6,21 +6,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import com.intelycare.engine.models.Document;
 import org.opensearch.action.index.IndexRequest;
 import org.opensearch.action.search.SearchRequest;
 import org.opensearch.action.search.SearchResponse;
 import org.opensearch.action.update.UpdateRequest;
-import org.opensearch.client.IndicesClient;
 import org.opensearch.client.RequestOptions;
 import org.opensearch.client.RestHighLevelClient;
-import org.opensearch.client.indices.CreateIndexRequest;
-import org.opensearch.client.indices.GetIndexRequest;
 import org.opensearch.common.unit.TimeValue;
 import org.opensearch.index.query.QueryBuilders;
 import org.opensearch.search.SearchHit;
 import org.opensearch.search.SearchHits;
 import org.opensearch.search.builder.SearchSourceBuilder;
-import engine.models.Document;
 
 public class OpenSearchUtils {
 
@@ -62,6 +61,7 @@ public class OpenSearchUtils {
       String id = hit.getSourceAsMap().get("ID").toString();
       results.add(id);
     }
+    results = results.stream().map(id -> Integer.parseInt(id)).sorted().map(id -> id.toString()).collect(Collectors.toList());
     return results;
   }
 
