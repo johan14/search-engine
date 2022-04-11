@@ -41,7 +41,10 @@ This application can also be ran using this **Docker image**: https://hub.docker
 
 This application is designed to be **scalable**, easily enhanced with new features since its components are **loosely coupled**, by using a dependency injection framework (**Guice**), **SOLID principles** and common creational **design patterns**.
 
-Other features include an **external properties file**, in order to decouple hard coded properties on the source files. Also in this project in order to test the functionality, **JUnit** is used for unit testing also integration testing. 
+Other features include an **external properties file**, in order to decouple hard coded properties on the source files.
+
+Also in this project in order to test the functionality, **JUnit** is used for unit testing also integration testing. 
+
 For **internationalization** purpouses, **resource bundles** are used supporting two languages: english and albanian.
 
 The architecture of this project is as follows:
